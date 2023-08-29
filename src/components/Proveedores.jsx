@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom';
 
 //componente para proveedores activos
 export default function Proveedores() {
@@ -13,6 +14,33 @@ export default function Proveedores() {
             setProveedores(response.data.detalle);
         }).catch((error) => {
             console.log(error);
+        })
+    }
+
+    const desactivarProveedor = (id) => {
+        console.log(id);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                axios.put(`http://localhost:8000/api/desactivar_proveedor/${id}`).then((response) => {
+                    console.log(response.data)
+                }).catch((error) => {
+                    console.log(error);
+                })
+                
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
         })
     }
 
@@ -42,10 +70,10 @@ export default function Proveedores() {
                                 <td>{proveedor.telefono}</td>
                                 <td>{proveedor.correo}</td>
                                 <td>
-                                    <button className='btn btn-warning'>Editar</button>
+                                    <Link to={`/actualizarProveedor/${proveedor.id}`} className='btn btn-warning'>Editar</Link>
                                 </td>
                                 <td>
-                                    <button className='btn btn-danger'>Desactivar</button>
+                                    <button className='btn btn-danger' onClick={() => desactivarProveedor(proveedor.id)}>Desactivar</button>
                                 </td>
                             </tr>
                         )

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -12,6 +13,11 @@ export default function RegistrarProveedor() {
     const registrarProveedor = (data) => {
         console.log(data);
         //axios.post
+        axios.post('http://localhost:8000/api/registrar_proveedor', data).then((response) => {
+            console.log(response.data);
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 
     return (
